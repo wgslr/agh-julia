@@ -40,9 +40,6 @@ and returns its adjacency matrix.=#
 function generate_random_graph(N::Int64, K::Int64)
     A = Array{Int64,2}(N, N)
 
-    # for i::Int64=1:N, j::Int64=1:N
-    #   A[i,j] = 0
-    # end
     A .= 0
 
     for i in sample(1:N*N, K, replace=false)
@@ -136,6 +133,10 @@ function check_euler(graph::Array{GraphVertex, 1})
     "Graph is not connected"
 end
 
+# Optimization: separate methods for various types
+format_node(node::Person) = "Person: $(node.name)\n"
+format_node(node::Address) = "Street nr: $(node.streetNumber)\n"
+
 #= Returns text representation of the graph consisiting of each node's value
    text and number of its neighbors. =#
 function graph_to_str(graph::Array{GraphVertex, 1})
@@ -144,11 +145,7 @@ function graph_to_str(graph::Array{GraphVertex, 1})
     graph_str *= "****\n"
 
     n = v.value
-    if isa(n, Person)
-      node_str = "Person: $(n.name)\n"
-    else isa(n, Address)
-      node_str = "Street nr: $(n.streetNumber)\n"
-    end
+    node_str = format_node(n)
 
     graph_str *= node_str
     graph_str *= "Neighbors: $(length(v.neighbors))\n"
