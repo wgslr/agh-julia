@@ -38,14 +38,14 @@ end
 #= Generates random directed graph of size N with K edges
 and returns its adjacency matrix.=#
 function generate_random_graph(N::Int64, K::Int64)
-    A = Array{Int64,2}(N, N)
+    A = Array{Bool,2}(N, N)
 
-    A .= 0
+    A .= false
 
     for i in sample(1:N*N, K, replace=false)
       row, col = ind2sub(size(A), i)
-      A[row,col] = 1
-      A[col,row] = 1
+      A[row,col] = true
+      A[col,row] = true
     end
     A
 end
@@ -72,12 +72,12 @@ end
 
 #= Converts given adjacency matrix (NxN)
   into list of graph vertices (of type GraphVertex and length N). =#
-function convert_to_graph(A::Array{Int64, 2}, nodes::Array{NodeType, 1})
+function convert_to_graph(A::Array{Bool, 2}, nodes::Array{NodeType, 1})
   N::Int64 = length(nodes)
   graph::Array{GraphVertex, 1} = map(n -> GraphVertex(n, GraphVertex[]), nodes)
 
   for i = 1:N, j = 1:N
-      if A[i,j] == 1
+      if A[i,j]
         push!(graph[i].neighbors, graph[j])
       end
   end
@@ -163,9 +163,9 @@ function test_graph()
   for i=1:100
     # global graph
 
-    A = generate_random_graph(N, K)
-    nodes = generate_random_nodes(N)
-    graph = convert_to_graph(A, nodes)
+    A::Array{Bool, 2} = generate_random_graph(N, K)
+    nodes::Array{NodeType, 1} = generate_random_nodes(N)
+    graph::Array{GraphVertex, 1} = convert_to_graph(A, nodes)
 
     str = graph_to_str(graph)
     # println(str)
