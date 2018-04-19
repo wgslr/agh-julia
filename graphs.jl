@@ -75,7 +75,7 @@ end
 
 #= Converts given adjacency matrix (NxN)
   into list of graph vertices (of type GraphVertex and length N). =#
-function convert_to_graph(A, nodes)
+function convert_to_graph(A::Array{Int64, 2}, nodes::Array{NodeType, 1})
   N = length(nodes)
   push!(graph, map(n -> GraphVertex(n, GraphVertex[]), nodes)...)
 
