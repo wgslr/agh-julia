@@ -29,15 +29,15 @@ end
 
 
 # Number of graph nodes.
-N = 800
+# N = 800
 
 # Number of graph edges.
-K = 10000
+# K = 10000
 
 
 #= Generates random directed graph of size N with K edges
 and returns its adjacency matrix.=#
-function generate_random_graph()
+function generate_random_graph(N::Int64, K::Int64)
     A = Array{Int64,2}(N, N)
 
     # for i::Int64=1:N, j::Int64=1:N
@@ -64,7 +64,7 @@ function get_random_address()
 end
 
 # Generates N random nodes (of random NodeType).
-function generate_random_nodes()
+function generate_random_nodes(N::Int64)
   nodes = Array{NodeType, 1}(N)
 
   for i = 1:N
@@ -158,11 +158,15 @@ end
 #= Tests graph functions by creating 100 graphs, checking Euler cycle
   and creating text representation. =#
 function test_graph()
+  N::Int64 = 800
+
+  # Number of graph edges.
+  K::Int64 = 10000
   for i=1:100
     global graph = GraphVertex[]
 
-    A = generate_random_graph()
-    nodes = generate_random_nodes()
+    A = generate_random_graph(N, K)
+    nodes = generate_random_nodes(N)
     convert_to_graph(A, nodes)
 
     str = graph_to_str()
