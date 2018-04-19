@@ -57,7 +57,7 @@ function get_random_person()
   Person(randstring())
 end
 
-# Generates random person object (with random name).
+# Generates random address object (with street random number).
 function get_random_address()
   Address(rand(1:100))
 end
@@ -170,3 +170,6 @@ function test_graph()
 end
 
 end
+
+@time Graphs.test_graph()
+
