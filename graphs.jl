@@ -20,11 +20,11 @@ end
 abstract type NodeType end
 
 struct Person <: NodeType
-  name
+  name :: String
 end
 
 struct Address <: NodeType
-  streetNumber
+  streetNumber :: Int64
 end
 
 
