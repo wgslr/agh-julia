@@ -131,7 +131,7 @@ end
    connectivity condition and evaluating if every vertex has even degree =#
 function check_euler(graph::Array{GraphVertex, 1})
   if length(partition(graph)) == 1
-    return all(map(v -> iseven(length(v.neighbors)), graph))
+    return any(map(v -> isodd(length(v.neighbors)), graph))
   end
     "Graph is not connected"
 end
