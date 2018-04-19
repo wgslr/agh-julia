@@ -40,9 +40,10 @@ and returns its adjacency matrix.=#
 function generate_random_graph()
     A = Array{Int64,2}(N, N)
 
-    for i=1:N, j=1:N
-      A[i,j] = 0
-    end
+    # for i::Int64=1:N, j::Int64=1:N
+    #   A[i,j] = 0
+    # end
+    A .= 0
 
     for i in sample(1:N*N, K, replace=false)
       row, col = ind2sub(size(A), i)
