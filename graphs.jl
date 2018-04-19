@@ -62,14 +62,6 @@ function get_random_address()
   Address(rand(1:100))
 end
 
-function generate_node()
-  # if(rand() > 0.5)
-  #   return Graphs.get_random_person()
-  # else
-  #   return Graph.get_random_address()
-  # end
-end
-
 # Generates N random nodes (of random NodeType).
 function generate_random_nodes()
   nodes = Array{NodeType, 1}(N)
@@ -173,9 +165,9 @@ function test_graph()
     convert_to_graph(A, nodes)
 
     str = graph_to_str()
-    println(str)
+    # println(str)
     check_euler()
-    #println(check_euler())
+    # println(check_euler())
   end
 end
 
