@@ -112,14 +112,24 @@ function bfs(;visited::Set=Set(), remaining::Set=Set(graph))
   while !isempty(q)
     v = pop!(q)
 
-    for n in v.neighbors
-      if !(n in visited)
+
+
+    update = function(n)
         push!(q, n)
         push!(visited, n)
         push!(local_visited, n)
         delete!(remaining, n)
-      end
     end
+    
+    update.(filter(n -> !(n in visited), v.neighbors))
+    # , filter(n -> !(n in visited), v.neighbors))
+
+
+
+    # for n in v.neighbors
+    #   if !(n in visited)
+    #   end
+    # end
   end
   local_visited
 end
