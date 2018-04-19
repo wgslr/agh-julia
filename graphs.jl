@@ -99,6 +99,11 @@ function partition(graph::Array{GraphVertex, 1})
   parts
 end
 
+function is_connected(graph::Array{GraphVertex})
+  remaining = Set(graph)
+  length(graph) == length(bfs(remaining=remaining))
+end
+
 #= Performs BFS traversal on the graph and returns list of visited nodes.
   Optionally, BFS can initialized with set of skipped and remaining nodes.
   Start nodes is taken from the set of remaining elements. =#
@@ -124,10 +129,11 @@ function bfs(;visited::Set=Set(), remaining::Set=Set(graph))
   local_visited
 end
 
+
 #= Checks if there's Euler cycle in the graph by investigating
    connectivity condition and evaluating if every vertex has even degree =#
 function check_euler(graph::Array{GraphVertex, 1})
-  if length(partition(graph)) == 1
+  if is_connected(graph)
     return any(map(v -> isodd(length(v.neighbors)), graph))
   end
     "Graph is not connected"
