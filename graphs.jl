@@ -62,11 +62,20 @@ function get_random_address()
   Address(rand(1:100))
 end
 
+function generate_node()
+  # if(rand() > 0.5)
+  #   return Graphs.get_random_person()
+  # else
+  #   return Graph.get_random_address()
+  # end
+end
+
 # Generates N random nodes (of random NodeType).
 function generate_random_nodes()
-  nodes = Vector()
-  for i= 1:N
-    push!(nodes, rand() > 0.5 ? get_random_person() : get_random_address())
+  nodes = Array{NodeType, 1}(N)
+
+  for i = 1:N
+   nodes[i] = (rand() > 0.5 ? Graphs.get_random_person() : Graphs.get_random_address())
   end
   nodes
 end
@@ -164,7 +173,7 @@ function test_graph()
     convert_to_graph(A, nodes)
 
     str = graph_to_str()
-    # println(str)
+    println(str)
     check_euler()
     #println(check_euler())
   end
@@ -173,3 +182,13 @@ end
 end
 
 @time Graphs.test_graph()
+
+# print(Graphs.generate_random_nodes())
+# @code_warntype Graphs.generate_random_nodes()
+
+# @code_warntype Graphs.test_graph()
+
+# Profile.init()
+# Profile.clear()
+# @profile Graphs.test_graph() 
+# Profile.print()
