@@ -19,11 +19,11 @@ end
 # Types of valid graph node's values.
 abstract type NodeType end
 
-mutable struct Person <: NodeType
+struct Person <: NodeType
   name
 end
 
-mutable struct Address <: NodeType
+struct Address <: NodeType
   streetNumber
 end
 
