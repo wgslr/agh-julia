@@ -80,10 +80,8 @@ function convert_to_graph(A::Array{Bool, 2}, nodes::Array{NodeType, 1})
   N::Int64 = length(nodes)
   graph::Array{GraphVertex, 1} = map(n -> GraphVertex(n, GraphVertex[]), nodes)
 
-  for i = 1:N, j = 1:N
-      if A[i,j]
-        push!(graph[i].neighbors, graph[j])
-      end
+  for i = 1:N
+    graph[i].neighbors = map(idx -> graph[idx[1]], Iterators.filter(x -> x[2], enumerate(A[i, :])))
   end
   graph
 end
