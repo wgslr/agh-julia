@@ -65,7 +65,11 @@ function generate_random_nodes(N::Int64)
   nodes = Array{NodeType, 1}(N)
 
   for i = 1:N
-   nodes[i] = (rand() > 0.5 ? Graphs.get_random_person() : Graphs.get_random_address())
+    if(rand() > 0.5)
+      nodes[i] = Graphs.get_random_person()
+    else
+      nodes[i]  = Graphs.get_random_address()
+    end
   end
   nodes
 end
