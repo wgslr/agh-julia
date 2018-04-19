@@ -165,11 +165,11 @@ function test_graph()
 
     str = graph_to_str()
     # println(str)
-    println(check_euler())
+    check_euler()
+    #println(check_euler())
   end
 end
 
 end
 
 @time Graphs.test_graph()
-
