@@ -1,5 +1,6 @@
 version=0
-workers=1
+maxworkers=2 * nprocs()
+workers=nprocs()
 stripes=1
 timefile="times.csv"
 
@@ -32,6 +33,9 @@ function calc_julia_main(h,w)
    xrange = linspace(xmin, xmax, w)
    yrange = linspace(ymin, ymax, h)
    julia_set = Array{Int64}((w, h))
+
+
+
    secs = @elapsed calc_julia!(julia_set, xrange, yrange, height=h, width_end=w)
 
    println("$version,$workers,$stripes,$secs,$h,$w")
@@ -44,5 +48,13 @@ function calc_julia_main(h,w)
    png("julia")
 end
 
-
-calc_julia_main(2000,2000)
+width = 2000
+height = 2000
+for i in 1:maxworkers
+    workers = i
+    stripes = workers
+    while stripes <= width
+        calc_julia_main(height, width)
+        stripes = stripes * 2
+    end
+end
