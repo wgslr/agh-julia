@@ -57,6 +57,4 @@ end
 
 close(resultsChnl)
 
-# TODO gather results conitnuusly to prevent block on full channel
-
 println("Total lines: ", sum(resultsChnl))
