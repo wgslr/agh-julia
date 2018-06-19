@@ -34,7 +34,16 @@ function calc_julia_main(h,w)
    yrange = linspace(ymin, ymax, h)
    julia_set = Array{Int64}((w, h))
 
-
+    jobs = []
+    prev_end = 0
+    togen = stripes
+    while(togen > 0)
+        local_w = div((w - prev_end), togen)
+        start = prev_end + 1
+        push!(jobs, (start, start + local_w - 1))
+        prev_end = start + local_w - 1
+        togen = togen - 1
+    end
 
    secs = @elapsed calc_julia!(julia_set, xrange, yrange, height=h, width_end=w)
 
