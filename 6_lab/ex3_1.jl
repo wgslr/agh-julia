@@ -24,6 +24,7 @@ function calc_julia!(julia_set, xrange, yrange; maxiter=200, height=400, width_s
             julia_set[x, y] = generate_julia(z, c=-0.70176-0.3842im, maxiter=maxiter)
         end
     end
+    julia_set[width_start:width_end, :]
 end
 
 
@@ -45,11 +46,11 @@ function calc_julia_main(h,w, stripes, workers)
         togen = togen - 1
     end
 
-    secs =  @elapsed @parallel (vcat) for (s, e) = jobs
+    tic()
+    data = @parallel (vcat) for (s, e) = jobs
         calc_julia!(julia_set, xrange, yrange, height=h, width_start=s, width_end=e)
     end
-
-#    secs = @elapsed calc_julia!(julia_set, xrange, yrange, height=h, width_end=w)
+    secs = toq()
 
    println("$version,$workers,$stripes,$secs,$h,$w")
    fd = Base.open(timefile, "a")
@@ -57,7 +58,7 @@ function calc_julia_main(h,w, stripes, workers)
    close(fd)
    
 
-   Plots.heatmap(xrange, yrange, julia_set)
+   Plots.heatmap(xrange, yrange, data)
    png("julia")
 end
 
@@ -67,9 +68,9 @@ function time_julia(width=4000, height=4000)
         workers = i
         stripes = workers
         while stripes <= width
+            println("workers $workers, stripes $stripes")
             calc_julia_main(height, width, stripes, workers)
             stripes = stripes * 2
-            println("stripes $stripes")
         end
     end
 end
