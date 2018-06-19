@@ -1,4 +1,4 @@
-version=0
+version=1
 maxworkers=2 * nprocs()
 workers=nprocs()
 stripes=1
@@ -27,7 +27,7 @@ function calc_julia!(julia_set, xrange, yrange; maxiter=200, height=400, width_s
 end
 
 
-function calc_julia_main(h,w)
+function calc_julia_main(h,w, stripes, workers)
    xmin, xmax = -2,2
    ymin, ymax = -1,1
    xrange = linspace(xmin, xmax, w)
@@ -45,7 +45,11 @@ function calc_julia_main(h,w)
         togen = togen - 1
     end
 
-   secs = @elapsed calc_julia!(julia_set, xrange, yrange, height=h, width_end=w)
+    secs =  @elapsed @parallel (vcat) for (s, e) = jobs
+        calc_julia!(julia_set, xrange, yrange, height=h, width_start=s, width_end=e)
+    end
+
+#    secs = @elapsed calc_julia!(julia_set, xrange, yrange, height=h, width_end=w)
 
    println("$version,$workers,$stripes,$secs,$h,$w")
    fd = Base.open(timefile, "a")
@@ -57,13 +61,15 @@ function calc_julia_main(h,w)
    png("julia")
 end
 
-width = 2000
-height = 2000
-for i in 1:maxworkers
-    workers = i
-    stripes = workers
-    while stripes <= width
-        calc_julia_main(height, width)
-        stripes = stripes * 2
+
+function time_julia(width=4000, height=4000)
+    for i in nprocs():nprocs()
+        workers = i
+        stripes = workers
+        while stripes <= width
+            calc_julia_main(height, width, stripes, workers)
+            stripes = stripes * 2
+            println("stripes $stripes")
+        end
     end
 end
