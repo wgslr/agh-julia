@@ -1,6 +1,7 @@
 version=1
-maxworkers=2 * nprocs()
-workers=nprocs()
+allworkers=workers
+maxworkers=workers()
+workers=allworkers()
 stripes=1
 timefile="times.csv"
 
@@ -68,7 +69,7 @@ end
 
 
 function time_julia(width=4000, height=4000)
-    for i in nprocs():nprocs()
+    for i in length(allworkers()):length(allworkers())
         workers = i
         stripes = workers
         while stripes <= width
@@ -76,5 +77,7 @@ function time_julia(width=4000, height=4000)
             calc_julia_main(height, width, stripes, workers)
             stripes = stripes * 2
         end
+        println("workers $workers, stripes $width")
+        calc_julia_main(height, width, width, workers)
     end
 end

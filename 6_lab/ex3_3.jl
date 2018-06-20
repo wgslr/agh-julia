@@ -1,4 +1,4 @@
-version=2
+version=3
 maxworkers=length(workers())
 # workers=nprocs()
 stripes=1
@@ -104,7 +104,8 @@ end
 
 
 function time_julia(width=4000, height=4000)
-    for i in maxworkers:-1:1
+    # for i in maxworkers:-1:1
+    for i in maxworkers:maxworkers
         workers = i
         stripes = workers
         while stripes <= width

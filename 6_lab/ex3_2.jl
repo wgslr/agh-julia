@@ -81,6 +81,7 @@ function time_julia(width=4000, height=4000)
             calc_julia_main(height, width, stripes, workers)
             stripes = stripes * 2
         end
+            println("workers $workers, stripes $stripes")
         calc_julia_main(height, width, width, workers)
     end
 end
