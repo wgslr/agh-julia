@@ -46,6 +46,10 @@ function calc_julia_main(h,w, stripes, workers)
         togen = togen - 1
     end
 
+    lens = map(bounds -> bounds[2] - bounds[1] + 1, jobs)
+    avgwidth = sum(lens)/length(lens)
+    println("Averag stripe has $avgwidth columns")
+
     tic()
     data = @sync @parallel (vcat) for (s, e) = jobs
         calc_julia!(julia_set, xrange, yrange, height=h, width_start=s, width_end=e)
