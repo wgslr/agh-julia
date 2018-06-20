@@ -35,7 +35,11 @@ end
 function be_worker(jobs_chnl, results_chnl, julia_set, xrange, yrange, h)
     println("worker function spawned")
     while true
-        (s, e) =  take!(jobs_chnl)
+        job = try take!(jobs_chnl) end
+        if job == nothing
+            break
+        end
+        (s,e) = job
         put!(results_chnl, calc_julia!(julia_set, xrange, yrange, height=h, width_start=s, width_end=e))
     end
 end
@@ -88,19 +92,19 @@ function calc_julia_main(h,w, stripes, workers)
 
    println("$version,$workers,$stripes,$secs,$h,$w")
    fd = Base.open(timefile, "a")
-#    write(fd, "$version,$workers,$stripes,$secs,$h,$w\n")
+   write(fd, "$version,$workers,$stripes,$secs,$h,$w\n")
    close(fd)
    
 
-   println("Generating heatmap")
-   Plots.heatmap(xrange, yrange, data)
-   println("Writing png")
-   png("julia")
+#    println("Generating heatmap")
+#    Plots.heatmap(xrange, yrange, data)
+#    println("Writing png")
+#    png("julia")
 end
 
 
 function time_julia(width=4000, height=4000)
-    for i in 1:maxworkers
+    for i in maxworkers:-1:1
         workers = i
         stripes = workers
         while stripes <= width
