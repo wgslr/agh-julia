@@ -47,7 +47,7 @@ function calc_julia_main(h,w, stripes, workers)
     end
 
     tic()
-    data = @parallel (vcat) for (s, e) = jobs
+    data = @sync @parallel (vcat) for (s, e) = jobs
         calc_julia!(julia_set, xrange, yrange, height=h, width_start=s, width_end=e)
     end
     secs = toq()
@@ -58,8 +58,8 @@ function calc_julia_main(h,w, stripes, workers)
    close(fd)
    
 
-   Plots.heatmap(xrange, yrange, data)
-   png("julia")
+#    Plots.heatmap(xrange, yrange, data)
+#    png("julia")
 end
 
 
